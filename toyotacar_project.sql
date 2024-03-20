@@ -26,56 +26,56 @@ ORDER BY count(*) desc;
 -- 10.How does the price vary with the year of manufacture for Toyota cars?
 select `year`, avg(price) from toyota
 group by `year`;
--- 12. what is the average price, average tax and  average mileage of petrol fuelType?
+-- 11. what is the average price, average tax and  average mileage of petrol fuelType?
 select fuelType, AVG(price) average_price,AVG(tax) average_tax,AVG(mileage) average_mileage
 from toyota
 where fuelType = "Petrol";
 
--- 13. Which model has the highest average price?
+-- 12. Which model has the highest average price?
 select model, avg(price) avg_price from toyota
 group by model
 order by avg_price desc limit 1;
 
--- 14. How many Toyota cars have a mileage between 50000 and 100000?
+-- 13. How many Toyota cars have a mileage between 50000 and 100000?
 select count(*) as count from toyota
 where mileage between 50000 and 100000;
 
--- 15. What are the engine sizes with an average price higher than $30,000
+-- 14. What are the engine sizes with an average price higher than $30,000
 select engineSize, avg(price) avg_price from toyota
 group by engineSize
 having avg_price > 30000;
 
--- 16.find the top three model with the highest avg price that have petrol fueltype and mileage higher than 20000 and don't consider models which have less than 20 car.
+-- 15.find the top three model with the highest avg price that have petrol fueltype and mileage higher than 20000 and don't consider models which have less than 20 car.
 select model, avg(price) avg_price  from toyota
 where fuelType = "Petrol" and mileage >20000
 group by model
 having count(*) > 20
 order by avg_price desc limit 3;
--- 17. What is the average tax for Toyota cars with a mileage greater than 80000, grouped by transmission type, where the average tax is less than 150?
+-- 16. What is the average tax for Toyota cars with a mileage greater than 80000, grouped by transmission type, where the average tax is less than 150?
 select transmission,avg(tax) avg_tax from toyota
 where mileage >80000
 group by transmission
 having avg_tax < 150;
--- 18. What is the average price of Toyota cars that have a mileage greater than the average mileage of all Toyota cars?
+-- 17. What is the average price of Toyota cars that have a mileage greater than the average mileage of all Toyota cars?
 select  avg(price) avg_price from toyota
 where mileage >( select avg(mileage) from toyota);
 
--- 19. What is the average tax of Toyota cars that have a transmission type of 'Manual' and an engine size greater than the average engine size of all Toyota cars?
+-- 18. What is the average tax of Toyota cars that have a transmission type of 'Manual' and an engine size greater than the average engine size of all Toyota cars?
 select avg(tax) from toyota
 where transmission = 'Manual' and engineSize > (select avg(engineSize) from toyota);
 
--- 20. How many Toyota cars have a mileage less than the average mileage of Toyota cars with a price greater than 20000?
+--  19. How many Toyota cars have a mileage less than the average mileage of Toyota cars with a price greater than 20000?
 select count(*) total from toyota
 where mileage < (select avg(mileage) from toyota where price >20000);
 
--- 21 Create a new column 'tax_category' that categorizes cars into 'Low Tax' for cars with tax less than 100, 'Medium Tax' for cars with tax between 100 and 200, and 'High Tax' for cars with tax greater than or equal to 200?
+-- 20. Create a new column 'tax_category' that categorizes cars into 'Low Tax' for cars with tax less than 100, 'Medium Tax' for cars with tax between 100 and 200, and 'High Tax' for cars with tax greater than or equal to 200?
 select tax , (case
 when tax < 100 then 'Low Tax'
 when tax between 100 and 200 then 'Medium Tax'
 else 'High Tax'
 end) as tax_category from toyota;
 
--- 22 . Create a new column 'engine_size_category' that categorizes cars into 'Small' for 
+-- 21 . Create a new column 'engine_size_category' that categorizes cars into 'Small' for 
 -- cars with engine size less than 2.0, and 'Large' for cars with engine size greater than or equal to 2.0.
 alter table toyota add	column engine_size_category varchar(255);
 update toyota
